@@ -1,8 +1,9 @@
 const express = require("express");
+const cors = require("cors")
 const app = express();
-
+app.use(cors())
 // Defining get request at '/' route
-app.get("/homeData", function (req, res) {
+app.get("/config", function (req, res) {
   res.json({
     voltageSet: 53.23,
     currentSet: 1.0,
