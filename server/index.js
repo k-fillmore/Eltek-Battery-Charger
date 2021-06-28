@@ -11,6 +11,7 @@ app.get("/config", function (req, res) {
     scheduledCharging: false,
     scheduledChargingStart: "time",
     scheduledChargingEnd: "time",
+    chargingProfile: false,
   });
 });
 app.get("/chargingProfile", function (req, res) {
