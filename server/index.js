@@ -10,7 +10,7 @@ app.get("/config", function (req, res) {
     chargerState: false,
     scheduledCharging: false,
     scheduledChargingStart: "time",
-    scheduledChargingEndTime: "time",
+    scheduledChargingEnd: "time",
   });
 });
 app.get("/chargingProfile", function (req, res) {
