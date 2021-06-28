@@ -25,6 +25,22 @@ function Config() {
     );
   }, []);
 
+  function chargerButton(){
+      if(chargerState == true){
+       return (<Button onClick={() => setChargerState(prevChargerState => !chargerState)} value={chargerState} variant="success">True</Button>)
+      } else{
+       return <Button onClick={() => setChargerState(prevChargerState => !chargerState)}  value={chargerState} variant="danger">False</Button>
+      }
+    }
+  function scheduledChargingButton() {
+    if(scheduledCharging == true){
+        return <Button onClick={() => setScheduledCharging(prevScheduledCharging => !scheduledCharging)} value={scheduledCharging} variant="success">True</Button>
+      } else{
+        return <Button onClick={() => setScheduledCharging(prevScheduledCharging => !scheduledCharging)} value={scheduledCharging} variant="danger">False</Button>
+      }
+
+  }
+
   return (
     <div>
       <InputGroup className="mb-3">
@@ -32,18 +48,19 @@ function Config() {
         <InputGroup.Text id="basic-addon1">Charger Active:</InputGroup.Text>
         </InputGroup.Prepend>
         <InputGroup.Append>
-          <Button value={chargerState} variant="outline-secondary">False</Button>
+          {chargerButton()}
         </InputGroup.Append>
       </InputGroup>
 
       <InputGroup className="mb-3">
         <InputGroup.Prepend>
-          <InputGroup.Text type="number" id="basic-addon1">Voltage Setpoint:</InputGroup.Text>
+          <InputGroup.Text type="float" id="basic-addon1">Voltage Setpoint:</InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl
-          value={voltageSet.toFixed(2)}
-          placeholder="Username"
-          aria-label="Username"
+          value={voltageSet}
+          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value == ""){setVoltageSet(e.target.value)}}}
+          placeholder="Voltage Setpoint"
+          aria-label="Voltage Setpoint"
           aria-describedby="basic-addon1"
         />
       </InputGroup>
@@ -52,9 +69,10 @@ function Config() {
           <InputGroup.Text type="number" id="basic-addon1">Current Setpoint:</InputGroup.Text>
         </InputGroup.Prepend>
         <FormControl
-          value={currentSet.toFixed(2)}
-          placeholder="Username"
-          aria-label="Username"
+          value={currentSet}
+          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value == ""){setCurrentSet(e.target.value)}}}
+          placeholder="Current Setpoint:"
+          aria-label="Current Setpoint:"
           aria-describedby="basic-addon1"
         />
       </InputGroup>
@@ -64,7 +82,7 @@ function Config() {
         <InputGroup.Text id="basic-addon1">Scheduled Charging Enabled:</InputGroup.Text>
         </InputGroup.Prepend>
         <InputGroup.Append>
-          <Button value={scheduledCharging} variant="outline-secondary">False</Button>
+          {scheduledChargingButton()}
         </InputGroup.Append>
       </InputGroup>
 
@@ -76,6 +94,7 @@ function Config() {
         </InputGroup.Prepend>
         <FormControl
           value={scheduledCharingStart}
+          onChange={(e) => setScheduledChargingStart(e.target.value)}
           placeholder="Username"
           aria-label="Username"
           aria-describedby="basic-addon1"
@@ -90,11 +109,13 @@ function Config() {
         </InputGroup.Prepend>
         <FormControl
           value={scheduledCharingEnd}
+          onChange={(e) => setScheduledChargingEnd(e.target.value)}
           placeholder="Username"
           aria-label="Username"
           aria-describedby="basic-addon1"
         />
       </InputGroup>
+      <Button variant="dark">Save</Button>
     </div>
   );
 }
