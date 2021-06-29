@@ -2,6 +2,7 @@ const express = require("express");
 const cors = require("cors")
 const app = express();
 app.use(cors())
+app.use(express.json())
 // Defining get request at '/' route
 app.get("/config", function (req, res) {
   res.json({
@@ -14,6 +15,15 @@ app.get("/config", function (req, res) {
     chargingProfile: false,
   });
 });
+app.post("/config", function(req, res){
+    console.log(req.body), (err,result) => {
+        if (err){
+            console.log(err)
+        }else{
+            res.send("Success")
+        }
+    }
+})
 app.get("/chargingProfile", function (req, res) {
   res.json({
     pctMap:         [10.0, 20.0, 30.0, 40.0, 50.0],
