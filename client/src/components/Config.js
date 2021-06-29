@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
+import axios from 'axios'
 
 function Config() {
   const [chargerState, setChargerState] = useState(false);
@@ -25,15 +26,32 @@ function Config() {
     );
   }, []);
 
+  const saveData = () => {
+    console.log("pressed");
+    axios
+      .post("http://localhost:3000/config", {
+        chargerState: chargerState,
+        voltageSet: parseFloat(voltageSet),
+        currentSet: parseFloat(currentSet),
+        scheduledCharging: scheduledCharging,
+        scheduledChargingStart: scheduledCharingStart,
+        scheduledChargingEnd: scheduledCharingEnd
+
+      })
+      .then(() => {
+        console.log("Success");
+      });
+  };
+
   function chargerButton(){
-      if(chargerState == true){
+      if(chargerState === true){
        return (<Button onClick={() => setChargerState(prevChargerState => !chargerState)} value={chargerState} variant="success">True</Button>)
       } else{
        return <Button onClick={() => setChargerState(prevChargerState => !chargerState)}  value={chargerState} variant="danger">False</Button>
       }
     }
   function scheduledChargingButton() {
-    if(scheduledCharging == true){
+    if(scheduledCharging === true){
         return <Button onClick={() => setScheduledCharging(prevScheduledCharging => !scheduledCharging)} value={scheduledCharging} variant="success">True</Button>
       } else{
         return <Button onClick={() => setScheduledCharging(prevScheduledCharging => !scheduledCharging)} value={scheduledCharging} variant="danger">False</Button>
@@ -58,7 +76,7 @@ function Config() {
         </InputGroup.Prepend>
         <FormControl
           value={voltageSet}
-          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value == ""){setVoltageSet(e.target.value)}}}
+          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value === ""){setVoltageSet(e.target.value)}}}
           placeholder="Voltage Setpoint"
           aria-label="Voltage Setpoint"
           aria-describedby="basic-addon1"
@@ -70,7 +88,7 @@ function Config() {
         </InputGroup.Prepend>
         <FormControl
           value={currentSet}
-          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value == ""){setCurrentSet(e.target.value)}}}
+          onChange={(e) => {if (parseFloat(e.target.value) | e.target.value === ""){setCurrentSet(e.target.value)}}}
           placeholder="Current Setpoint:"
           aria-label="Current Setpoint:"
           aria-describedby="basic-addon1"
@@ -115,7 +133,7 @@ function Config() {
           aria-describedby="basic-addon1"
         />
       </InputGroup>
-      <Button variant="dark">Save</Button>
+      <Button onClick={() => saveData()} variant="dark">Save</Button>
     </div>
   );
 }
