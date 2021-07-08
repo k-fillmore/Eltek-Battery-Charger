@@ -1,5 +1,6 @@
 import { React, useEffect, useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
+import ChargingProfile from "./ChargingProfile"
 import axios from 'axios'
 
 function Config() {
@@ -134,6 +135,7 @@ function Config() {
         />
       </InputGroup>
       <Button onClick={() => saveData()} variant="dark">Save</Button>
+      <ChargingProfile></ChargingProfile>
     </div>
   );
 }
