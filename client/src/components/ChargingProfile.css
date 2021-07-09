@@ -1,0 +1,15 @@
+.counter {
+    font-size: 4rem;
+    font-weight: 300;
+}
+.counter button{
+    width: 4rem;
+  
+   font-size:2rem;
+   margin: 1rem;
+   text-align: center;
+   vertical-align: auto;
+}
+.counter title{
+    font-size:0.5rem;
+}
