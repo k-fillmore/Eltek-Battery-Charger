@@ -1,22 +1,25 @@
 const express = require("express");
 const cors = require("cors")
 const app = express();
+const fs = require('fs');
 app.use(cors())
 app.use(express.json())
-// Defining get request at '/' route
+
+
+
+
+
 app.get("/config", function (req, res) {
-  res.json({
-    voltageSet: 53.23,
-    currentSet: 1.0,
-    chargerState: false,
-    scheduledCharging: false,
-    scheduledChargingStart: "time",
-    scheduledChargingEnd: "time",
-    chargingProfile: false,
-  });
+  let configfile = fs.readFileSync("./config.json")
+  let config = JSON.parse(configfile)
+  //console.log(config)
+  res.json(config);
 });
+
 app.post("/config", function(req, res){
-    console.log(req.body), (err,result) => {
+    let config = req.body
+    console.log(config)
+    fs.writeFileSync("./config.json", JSON.stringify(config)), (err,result) => {
         if (err){
             console.log(err)
         }else{

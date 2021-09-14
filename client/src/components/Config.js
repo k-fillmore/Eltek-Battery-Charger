@@ -12,7 +12,7 @@ function Config() {
   const [scheduledCharingEnd, setScheduledChargingEnd] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:3000/Config`).then((res) =>
+    fetch(`http://localhost:3000/config`).then((res) =>
       res
         .json()
         .then((res) => {
