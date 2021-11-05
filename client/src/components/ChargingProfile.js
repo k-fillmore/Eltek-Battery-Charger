@@ -2,20 +2,19 @@ import { React, useState } from "react";
 import { InputGroup, FormControl, Button } from "react-bootstrap";
 import "./ChargingProfile.css";
 
-
 function ChargingProfile() {
-  const [profileName, setProfileName] = useState("name");
   const [profileId, setProfileId] = useState(0);
-  const [stateOfChargeMap, setStateOfChargeMap] = useState([
+  
+  let [voltageMap, setVoltageMap] = useState([
     0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
   ]);
-  const [voltageMap, setVoltageMap] = useState([
+  let [currentMap, setCurrentMap] = useState([
     0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
   ]);
-  const [currentMap, setCurrentMap] = useState([
-    0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 100,
-  ]);
-  let [numSetpoints, setNumSetpoints] = useState(5);
+  let [stateOfChargeMap, setStateOfChargeMap] = useState(Array.from(voltageMap.keys()));
+  let [numSetpoints, setNumSetpoints] = useState(
+    Math.max(voltageMap.length, currentMap.length)
+  );
 
   function handleVoltageChange(e, idx) {
     let modarr = [...voltageMap];
@@ -32,35 +31,30 @@ function ChargingProfile() {
     setCurrentMap(modarr);
   }
 
-  function handleCounter(direction){
-      if (numSetpoints > 0 & direction === "down"){
-          setNumSetpoints(numSetpoints-1);
-      } else if(numSetpoints >= 0 & direction === "up") {
-          setNumSetpoints(numSetpoints+1);
-      }
+  function handleCounter(direction) {
+    if ((numSetpoints > 1) & (direction === "down")) {
+      setNumSetpoints(numSetpoints - 1);
+      currentMap.pop();
+      voltageMap.pop();
+      stateOfChargeMap.pop();
+    } else if ((numSetpoints > 0) & (direction === "up")) {
+      setNumSetpoints(numSetpoints + 1);
+      currentMap.push(0);
+      voltageMap.push(0);
+      stateOfChargeMap.push(0);
+    }
   }
 
   return (
     <div>
       <p>Charging Profile</p>
-      
-      <div className="counter">
 
-          <h5>Number of Setpoints</h5>
-        <Button className="mb-3" variant="dark" onClick={() => {handleCounter("down")}}>
-          -
-        </Button>
-        {numSetpoints}
-        <Button className="mb-3" variant="dark" onClick={() => {handleCounter("up")}}>
-          +
-        </Button>
-      </div>
       {stateOfChargeMap.map((soc, index) => {
         return (
-          <InputGroup className="mb-3">
+          <InputGroup className="mb-3 InputGroup">
             <InputGroup.Prepend>
               <InputGroup.Text id="basic-addon1">
-                Voltage Setpoint {" " + (index + 1)}
+                Voltage {" " + (index + 1)}
               </InputGroup.Text>
             </InputGroup.Prepend>
             <FormControl
@@ -74,9 +68,7 @@ function ChargingProfile() {
               }}
             />
             <InputGroup.Append>
-              <InputGroup.Text>
-                Current Setpoint {" " + (index + 1)}
-              </InputGroup.Text>
+              <InputGroup.Text>Current {" " + (index + 1)}</InputGroup.Text>
             </InputGroup.Append>
             <FormControl
               placeholder="0.0"
@@ -91,6 +83,28 @@ function ChargingProfile() {
           </InputGroup>
         );
       })}
+      <div className="counter">
+        <h5>Number of Setpoints</h5>
+        <Button
+          className="mb-3"
+          variant="dark"
+          onClick={() => {
+            handleCounter("down");
+          }}
+        >
+          -
+        </Button>
+        {numSetpoints}
+        <Button
+          className="mb-3"
+          variant="dark"
+          onClick={() => {
+            handleCounter("up");
+          }}
+        >
+          +
+        </Button>
+      </div>
     </div>
   );
 }

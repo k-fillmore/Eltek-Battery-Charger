@@ -7,9 +7,15 @@
   
    font-size:2rem;
    margin: 1rem;
-   text-align: center;
+   text-align: auto;
    vertical-align: auto;
 }
 .counter title{
     font-size:0.5rem;
+}
+.InputGroup{
+    width: 20rem;
+    vertical-align: text-top;
+    margin: auto;
+    display: flex;
 }
