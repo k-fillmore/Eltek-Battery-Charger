@@ -1,0 +1,8 @@
+{
+    "chargerState": false,
+    "voltageSet": 53.27,
+    "currentSet": 1,
+    "scheduledCharging": false,
+    "scheduledChargingStart": "time",
+    "scheduledChargingEnd": "time"
+}

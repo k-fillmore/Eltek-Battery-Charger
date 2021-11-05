@@ -1,9 +1,27 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Request
 import json
 from pydantic import BaseModel
 from typing import Optional
 
+from fastapi.middleware.cors import CORSMiddleware
+
 app = FastAPI()
+
+origins = [
+    "http://localhost.tiangolo.com",
+    "https://localhost.tiangolo.com",
+    "http://localhost:3000/*",
+    "http://localhost:8080",
+]
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=['*'],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
+
 
 class Config(BaseModel):
     chargerState: bool
@@ -12,6 +30,7 @@ class Config(BaseModel):
     scheduledCharging: bool
     scheduledChargingStart: str
     scheduledChargingEnd: str
+
 
 class Stats(BaseModel):
     timestamp: list
@@ -22,9 +41,10 @@ class Stats(BaseModel):
     outputTemperature: list
     wattHoursAdded: list
 
+
 class ChargingSession(BaseModel):
     id: int
-    active: bool 
+    active: bool
     start: str
     end: str
     data_dir: str
@@ -40,12 +60,15 @@ def read_root():
 def read_config():
     file = open("./config.json")
     config = json.load(file)
+    print(config)
     return config
 
 
 @app.post("/config")
-def save_config(config: Config):
-    print(config)
+async def save_config(request: Request):
+    config = await request.json()
+    with open('./config.json', 'w', encoding='utf-8') as f:
+        json.dump(config, f, ensure_ascii=False, indent=4)
 
 
 @app.get("/charging_profile")
@@ -71,13 +94,15 @@ def get_stats():
     }
     return stats
 
+
 @app.get("/chargingStart")
-def start_charging(charge : ChargingSession):
+def start_charging(charge: ChargingSession):
     data = charge.data_dir + str(charge.id) + ".json"
     if not charge.active:
         print("do something")
     else:
         return(charge)
+
 
 @app.post("/chargingEnd")
 def stop_charging(charge: ChargingSession):
@@ -86,14 +111,3 @@ def stop_charging(charge: ChargingSession):
         print("do something")
     else:
         return(charge)
-
-
-
-
-
-
-
-
-
-
-

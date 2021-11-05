@@ -13,7 +13,7 @@ function Config() {
   const [scheduledCharingEnd, setScheduledChargingEnd] = useState("");
 
   useEffect(() => {
-    fetch(`http://localhost:3000/config`).then((res) =>
+    fetch(`http://localhost:8000/config`).then((res) =>
       res
         .json()
         .then((res) => {
@@ -31,7 +31,7 @@ function Config() {
   const saveData = () => {
     console.log("pressed");
     axios
-      .post("http://localhost:3000/config", {
+      .post("http://localhost:8000/config", {
         chargerState: chargerState,
         voltageSet: parseFloat(voltageSet),
         currentSet: parseFloat(currentSet),
